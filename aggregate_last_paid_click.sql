@@ -20,7 +20,7 @@ ya_daily as (
     from ya_ads
     group by
         DATE_TRUNC('day', campaign_date), utm_source, utm_medium, utm_campaign
-)
+), tab as(
 select
     TO_CHAR(visit_date, 'YY-MM-DD') as visit_date,
     shpro.utm_source,
@@ -48,15 +48,18 @@ left join ya_daily as ya
         and shpro.utm_source = ya.utm_source
         and shpro.utm_medium = ya.utm_medium
         and shpro.utm_campaign = ya.utm_campaign
-where status_id = 142
-group by visit_date, 1, 2, 3, 4, total_vk_spent, total_ya_spent
+group by visit_date, 2, 3, 4, total_cost
 order by
     purchases_count desc,
     visit_date asc,
-    visitors_count desc,
+    --visitors_count desc,
     shpro.utm_source asc,
     shpro.utm_medium asc,
-    shpro.utm_campaign asc;
+    shpro.utm_campaign asc)
+select *
+from tab
+order by purchases_count desc
+limit 15;
 
 
 
