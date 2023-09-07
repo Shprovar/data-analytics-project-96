@@ -52,7 +52,7 @@ group by visit_date, 2, 3, 4, total_cost
 order by
     purchases_count desc,
     visit_date asc,
-    --visitors_count desc,
+    visitors_count desc,
     shpro.utm_source asc,
     shpro.utm_medium asc,
     shpro.utm_campaign asc)
