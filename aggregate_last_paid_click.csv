@@ -1,16 +1,16 @@
-"visit_date","utm_source","utm_medium","utm_campaign","visitors_count","total_cost","leads_count","purchases_count","revenue"
-"23-06-01",yandex,cpc,freemium,2,0,2,2,232766
-"23-06-01",yandex,cpc,freemium,2,0,2,2,109197
-"23-06-01",vk,cpc,base-python,1,0,1,1,9072
-"23-06-01",vk,cpc,freemium-frontend,1,0,1,1,83147
-"23-06-01",vk,cpc,freemium-frontend,1,0,1,1,41666
-"23-06-01",vk,cpc,freemium-frontend,1,0,1,1,20160
-"23-06-01",vk,cpc,freemium-frontend,1,0,1,1,189210
-"23-06-01",vk,cpc,freemium-frontend,1,0,1,1,3900
-"23-06-01",vk,cpc,freemium-python,1,0,1,1,1560
-"23-06-01",vk,cpc,prof-java,1,0,1,1,178800
-"23-06-01",vk,cpc,prof-java,1,0,1,1,53926
-"23-06-01",vk,cpc,prof-python,1,0,1,1,51200
-"23-06-01",vk,cpc,prof-python,1,0,1,1,85144
-"23-06-01",vk,cpc,prof-python,1,0,1,1,50397
-"23-06-01",vk,cpc,prof-python,1,0,1,1,126000
+"visit_date","utm_source","utm_medium","utm_campaign","visitors_count","leads_count","purchases_count","revenue","total_cost"
+2023-06-01 00:00:00.000,yandex,cpc,freemium,103,103,25,1654810,21654
+2023-06-01 00:00:00.000,yandex,cpc,prof-frontend,78,78,12,1057000,57138
+2023-06-01 00:00:00.000,yandex,cpc,prof-python,62,62,7,613196,33026
+2023-06-01 00:00:00.000,yandex,cpc,base-python,31,31,7,476021,12524
+2023-06-01 00:00:00.000,vk,cpc,freemium-frontend,43,43,5,338083,3160
+2023-06-01 00:00:00.000,vk,cpc,prof-python,40,40,5,355564,2028
+2023-06-01 00:00:00.000,yandex,cpc,prof-java,49,49,4,284590,29490
+2023-06-01 00:00:00.000,yandex,cpc,base-frontend,40,40,3,268515,18061
+2023-06-01 00:00:00.000,yandex,cpc,prof-professions-brand,13,13,3,154287,4818
+2023-06-01 00:00:00.000,vk,cpc,prof-java,23,23,2,232726,3115
+2023-06-01 00:00:00.000,yandex,cpc,prof-data-analytics,14,14,2,220264,10086
+2023-06-30 00:00:00.000,admitad,cpa,admitad,2,2,2,201150,0
+2023-06-01 00:00:00.000,vk,cpc,base-python,36,36,1,9072,2537
+2023-06-01 00:00:00.000,vk,cpc,freemium-python,25,25,1,1560,980
+2023-06-01 00:00:00.000,yandex,cpc,base-java,20,20,1,48000,19252
