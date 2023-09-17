@@ -23,7 +23,7 @@ select DATE_TRUNC('day', campaign_date) as visit_date,
         from vk_ya
         group by 1, 2, 3, 4)
     select
-        to_char(shpro.visit_date, 'YYYY-MM-DD') as visit_date,
+        to_char( shpro.visit_date, 'YYYY-MM-DD') as visit_date,
         COUNT(visitor_id) as visitors_count,
         shpro.utm_source,
         shpro.utm_medium,
@@ -38,7 +38,7 @@ select DATE_TRUNC('day', campaign_date) as visit_date,
         SUM(amount) as revenue
     from public.shpro_last_paid1 as shpro
     left join advertising_costs as adv
-        on shpro.visit_date = adv.visit_date
+        ON DATE_TRUNC('day', shpro.visit_date) = adv.visit_date
         and shpro.utm_source = adv.utm_source
         and shpro.utm_medium = adv.utm_medium
         and shpro.utm_campaign = adv.utm_campaign

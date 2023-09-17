@@ -4,9 +4,8 @@ WITH tab AS (
         *,
         s.visitor_id as sessions_visitor_id,
         ROW_NUMBER()
-            over (partition by lead_id order by s.visit_date desc)
+            over (partition by s.visitor_id order by s.visit_date desc)
         as click_rank
-        --,CASE WHEN s.visit_date < leads.created_at THEN leads.lead_id ELSE '0' END AS leads_tmp
     from sessions as s
     left join leads on s.visitor_id = leads.visitor_id AND s.visit_date <= leads.created_at
     where medium != 'organic'
@@ -24,7 +23,7 @@ select
     status_id
 from tab
 where
-    click_rank = 1 and amount is not null
+    click_rank = 1 
 order by
     amount desc,
     visit_date asc,
