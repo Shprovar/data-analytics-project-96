@@ -1,32 +1,35 @@
 Шаг2 запрос для атрибуции лидов по модели Last Paid Click
 WITH tab AS (
-    select
+    SELECT
         *,
-        s.visitor_id as sessions_visitor_id,
+        s.visitor_id AS sessions_visitor_id,
         ROW_NUMBER()
-            over (partition by s.visitor_id order by s.visit_date desc)
-        as click_rank
-    from sessions as s
-    left join leads on s.visitor_id = leads.visitor_id AND s.visit_date <= leads.created_at
-    where medium != 'organic'
+            OVER (PARTITION BY s.visitor_id ORDER BY s.visit_date DESC)
+        AS click_rank
+    FROM sessions AS s
+    LEFT JOIN
+        leads
+        ON s.visitor_id = leads.visitor_id AND s.visit_date <= leads.created_at
+    WHERE medium != 'organic'
 )
-select
-    sessions_visitor_id as visitor_id,
+
+SELECT
+    sessions_visitor_id AS visitor_id,
     visit_date,
-    source as utm_source,
-    medium as utm_medium,
-    campaign as utm_campaign,
+    source AS utm_source,
+    medium AS utm_medium,
+    campaign AS utm_campaign,
     lead_id,
     created_at,
     amount,
     closing_reason,
     status_id
-from tab
-where
-    click_rank = 1 
-order by
-    amount desc,
-    visit_date asc,
-    utm_source asc,
-    utm_medium asc,
-    utm_campaign asc;
+FROM tab
+WHERE
+    click_rank = 1
+ORDER BY
+    amount DESC,
+    visit_date ASC,
+    utm_source ASC,
+    utm_medium ASC,
+    utm_campaign ASC;
