@@ -60,6 +60,28 @@ SELECT
 FROM sessions AS s
 LEFT JOIN leads AS l ON s.visitor_id = l.visitor_id;
 
+--конверсия vk:
+SELECT
+COUNT(DISTINCT l.lead_id) AS leads_count,
+COUNT(DISTINCT s.visitor_id) AS visitors_count,
+ROUND(
+100.0 * COUNT(DISTINCT l.lead_id) / COUNT(DISTINCT s.visitor_id), 2
+) AS lead_conversion_rate,
+COUNT(DISTINCT l.lead_id) FILTER (
+WHERE l.amount > 0
+) AS paying_customers_count,
+ROUND(
+100.0
+* COUNT(DISTINCT l.lead_id) FILTER (WHERE l.amount > 0)
+/ COUNT(DISTINCT l.lead_id),
+2
+) AS conversion_rate
+FROM sessions AS s
+LEFT JOIN leads AS l ON s.visitor_id = l.visitor_id
+where s.source='vk';
+
+--конверсия yandex:
+where s.source='yandex';
 
 –Запрос 5. Сколько мы тратим по разным каналам в динамике? 
 select
