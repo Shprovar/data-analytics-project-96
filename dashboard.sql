@@ -31,19 +31,17 @@ GROUP BY day, source
 ORDER BY day, source;
 
 –Запрос 3. Сколько лидов к нам приходят?
-
 SELECT
 COUNT(DISTINCT lead_id) AS unique_leads
 FROM leads;
-1300
 
 select
 count(distinct s.visitor_id) as uniq_vis,
 count(distinct lead_id) as uniq_lead
 from sessions s
 left join leads on s.visitor_id=leads.visitor_id;
-–Запрос 4. Какая конверсия из клика в лид? А из лида в оплату?
 
+–Запрос 4. Какая конверсия из клика в лид? А из лида в оплату?
 SELECT
     COUNT(DISTINCT l.lead_id) AS leads_count,
     COUNT(DISTINCT s.visitor_id) AS visitors_count,
@@ -81,8 +79,6 @@ order by utm_source, day;
 
 
 –Окупаются ли каналы?
-
-
 with vk_ya as (
     select
         utm_source,
@@ -161,15 +157,14 @@ order by
 
 
 
-–90% лидов закроется
-
+–90% лидов закроется:
 select percentile_disc(0.9) within group (order by (created_at - visit_date))
 from shpro_last_paid1
 where closing_reason = 'Успешная продажа' or status_id = 142;
 
 
 
-–Корреляция между рекламой и ростом органики
+–Корреляция между рекламой и ростом органики:
 with vk_ya as (
     select
         utm_source,
