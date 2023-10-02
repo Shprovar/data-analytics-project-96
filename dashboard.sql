@@ -60,28 +60,52 @@ SELECT
 FROM sessions AS s
 LEFT JOIN leads AS l ON s.visitor_id = l.visitor_id;
 
---конверсия vk:
+--конверсия vk/yandex:
 SELECT
-COUNT(DISTINCT l.lead_id) AS leads_count,
-COUNT(DISTINCT s.visitor_id) AS visitors_count,
-ROUND(
-100.0 * COUNT(DISTINCT l.lead_id) / COUNT(DISTINCT s.visitor_id), 2
-) AS lead_conversion_rate,
-COUNT(DISTINCT l.lead_id) FILTER (
-WHERE l.amount > 0
-) AS paying_customers_count,
-ROUND(
-100.0
-* COUNT(DISTINCT l.lead_id) FILTER (WHERE l.amount > 0)
-/ COUNT(DISTINCT l.lead_id),
-2
-) AS conversion_rate
+    COUNT(DISTINCT l.lead_id) AS leads_count,
+    COUNT(DISTINCT s.visitor_id) AS visitors_count,
+    ROUND(
+        100.0 * COUNT(DISTINCT l.lead_id) / COUNT(DISTINCT s.visitor_id), 2
+    ) AS lead_conversion_rate,
+    COUNT(DISTINCT l.lead_id) FILTER (
+        WHERE l.amount > 0
+    ) AS paying_customers_count,
+    ROUND(
+        100.0
+        * COUNT(DISTINCT l.lead_id) FILTER (WHERE l.amount > 0)
+        / COUNT(DISTINCT l.lead_id),
+        2
+    ) AS conversion_rate
 FROM sessions AS s
 LEFT JOIN leads AS l ON s.visitor_id = l.visitor_id
-where s.source='vk';
+WHERE s.source in ('vk', 'yandex')
+group by s.source;
 
---конверсия yandex:
-where s.source='yandex';
+--или конверсия по всем источникам(в том числе vk и yandex):
+select
+    s.source,
+    COUNT(distinct l.lead_id) as leads_count,
+    COUNT(distinct s.visitor_id) as visitors_count,
+    ROUND(
+        100.0
+        * COUNT(distinct l.lead_id)
+        / NULLIF(COUNT(distinct s.visitor_id), 0),
+        2
+    ) as lead_conversion_rate,
+    COUNT(distinct l.lead_id) filter (
+        where l.amount > 0
+    ) as paying_customers_count,
+    ROUND(
+        100.0
+        * COUNT(distinct l.lead_id) filter (where l.amount > 0)
+        / NULLIF(COUNT(distinct l.lead_id), 0),
+        2
+    ) as conversion_rate
+from sessions as s
+left join leads as l on s.visitor_id = l.visitor_id
+group by s.source;
+
+
 
 –Запрос 5. Сколько мы тратим по разным каналам в динамике? 
 select
