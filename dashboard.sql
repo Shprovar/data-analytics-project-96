@@ -193,7 +193,7 @@ order by
 
 
 
-–90% лидов закроется:
+–90% лидов закроется по модели LPC:
 select percentile_disc(0.9) within group (order by (created_at - visit_date))
 from shpro_last_paid1
 where closing_reason = 'Успешная продажа' or status_id = 142;
