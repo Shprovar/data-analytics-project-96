@@ -1,31 +1,21 @@
-with vk_ya as
-(SELECT
-    visit_date,
+with vk_ya as(
+select
     utm_source,
     utm_medium,
     utm_campaign,
-    SUM(daily_spent) as total_cost
-FROM(SELECT
-            DATE_TRUNC('day', campaign_date) as visit_date,
-            utm_source,
-            utm_medium,
-            utm_campaign,
-            daily_spent
-        FROM vk_ads
-        UNION ALL
-        SELECT
-            DATE_TRUNC('day', campaign_date) as visit_date,
-            utm_source,
-            utm_medium,
-            utm_campaign,
-            daily_spent
-        FROM ya_ads
-    ) as subquery
-GROUP BY
-    visit_date,
+    DATE_TRUNC('day', campaign_date) as visit_date,
+    sum(daily_spent) as total_cost
+from vk_ads
+group by 1, 2, 3, 4
+union all
+select
     utm_source,
     utm_medium,
-    utm_campaign)
+    utm_campaign,
+    DATE_TRUNC('day', campaign_date) as visit_date,
+    sum(daily_spent) as total_cost
+from ya_ads
+group by 1, 2, 3, 4)
 select
     TO_CHAR(shpro.visit_date, 'YYYY-MM-DD') as visit_date,
     COUNT(visitor_id) as visitors_count,
