@@ -201,32 +201,24 @@ where closing_reason = 'Успешная продажа' or status_id = 142;
 
 
 –Корреляция между рекламой и ростом органики:
-with vk_ya as (
-    select
-        utm_source,
-        utm_medium,
-        utm_campaign,
-        campaign_date,
-        daily_spent
-    from vk_ads
-    union all
-    select
-        utm_source,
-        utm_medium,
-        utm_campaign,
-        campaign_date,
-        daily_spent
-    from ya_ads
-),
-advertising_costs as (
-    select
-        DATE_TRUNC('day', campaign_date) as visit_date,
-        utm_source,
-        utm_medium,
-        utm_campaign,
-        SUM(daily_spent) as total_cost
-    from vk_ya
-    group by 1, 2, 3, 4
+with vk_ya as(
+select
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    DATE_TRUNC('day', campaign_date) as visit_date,
+    sum(daily_spent) as total_cost
+from vk_ads
+group by 1, 2, 3, 4
+union all
+select
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    DATE_TRUNC('day', campaign_date) as visit_date,
+    sum(daily_spent) as total_cost
+from ya_ads
+group by 1, 2, 3, 4
 )
 select
     TO_CHAR(s.visit_date, 'YYYY-MM-DD') as visit_date,
@@ -234,12 +226,10 @@ select
     source,
     SUM(total_cost)
 from sessions as s
-left join advertising_costs as adv
+left join vk_ya as vk_ya
     on
-        DATE_TRUNC('day', s.visit_date) = adv.visit_date
-        and s.source = adv.utm_source
-        and s.medium = adv.utm_medium
-        and s.campaign = adv.utm_campaign
+        DATE_TRUNC('day', s.visit_date) = vk_ya.visit_date
+        and s.source = vk_ya.utm_source
+        and s.medium = vk_ya.utm_medium
+        and s.campaign = vk_ya.utm_campaign
 group by 1, 3;
-
-
