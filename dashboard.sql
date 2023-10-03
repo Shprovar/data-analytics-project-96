@@ -125,32 +125,24 @@ order by utm_source, day;
 
 
 –Окупаются ли каналы?
-with vk_ya as (
-    select
-        utm_source,
-        utm_medium,
-        utm_campaign,
-        campaign_date,
-        daily_spent
-    from vk_ads
-    union all
-    select
-        utm_source,
-        utm_medium,
-        utm_campaign,
-        campaign_date,
-        daily_spent
-    from ya_ads
-),
-advertising_costs as (
-    select
-        DATE_TRUNC('day', campaign_date) as visit_date,
-        utm_source,
-        utm_medium,
-        utm_campaign,
-        SUM(daily_spent) as total_cost
-    from vk_ya
-    group by 1, 2, 3, 4
+with vk_ya as(
+select
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    DATE_TRUNC('day', campaign_date) as visit_date,
+    sum(daily_spent) as total_cost
+from vk_ads
+group by 1, 2, 3, 4
+union all
+select
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    DATE_TRUNC('day', campaign_date) as visit_date,
+    sum(daily_spent) as total_cost
+from ya_ads
+group by 1, 2, 3, 4
 ),
 final_tab as (
     select
@@ -168,12 +160,12 @@ final_tab as (
         end) as purchases_count,
         SUM(amount) as revenue
     from public.shpro_last_paid1 as shpro
-    left join advertising_costs as adv
+    left join vk_ya as vk_ya
         on
-            DATE_TRUNC('day', shpro.visit_date) = adv.visit_date
-            and shpro.utm_source = adv.utm_source
-            and shpro.utm_medium = adv.utm_medium
-            and shpro.utm_campaign = adv.utm_campaign
+            DATE_TRUNC('day', shpro.visit_date) = vk_ya.visit_date
+            and shpro.utm_source = vk_ya.utm_source
+            and shpro.utm_medium = vk_ya.utm_medium
+            and shpro.utm_campaign = vk_ya.utm_campaign
     group by 1, 3, 4, 5, 6
 )
 select
@@ -186,8 +178,6 @@ from final_tab
 group by 1
 order by
     roi desc nulls last;
-
-
 
 
 select
